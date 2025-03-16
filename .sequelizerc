@@ -1,9 +1,8 @@
-// .sequelizerc
 const path = require('path');
 
 module.exports = {
-  'config': path.resolve('psql', 'config', 'database.js'), // Update to 'psql' if keeping it there
+  'config': path.resolve('psql', 'config', 'database.js'),
   'models-path': path.resolve('src', 'models'),
   'migrations-path': path.resolve('migrations'),
-  'seeders-path': path.resolve('seeders'), // Optional
+  'seeders-path': path.resolve('seeders'), 
 };
