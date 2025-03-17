@@ -4,7 +4,7 @@ const express = require('express');
 const { Sequelize } = require('sequelize');
 const config = require('../psql/config/database'); // Adjust path if needed
 const userRoutes = require('./routes/userRoutes');
-
+const authRoutes = require('./routes/authRoutes')
 const app = express();
 
 // Initialize Sequelize with the development config
@@ -13,15 +13,7 @@ const sequelize = new Sequelize(config.development);
 // Middleware to parse JSON bodies
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// Debug middleware to log all incoming requests
-app.use((req, res, next) => {
-  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
-  console.log('Headers:', req.headers);
-  console.log('Body:', req.body);
-  next();
-});
-
+app.use('/api/auth', authRoutes);
 // Mount User routes
 app.use('/api/users', userRoutes);
 
@@ -31,10 +23,8 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: 'Something went wrong!', error: err.message });
 });
 
-// Port from environment or default to 3000
 const PORT = process.env.PORT || 3000;
 
-// Connect to database and start server
 sequelize
   .authenticate()
   .then(() => {
